@@ -61,7 +61,7 @@ Complimentary specs : buffer has not a fixed size, meaning you can resize it fol
 Readline works.
 
 
-Program WORKFLOW :
+Program organisation :
 
 ```
 
