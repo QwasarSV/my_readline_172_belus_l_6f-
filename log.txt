@@ -36,6 +36,12 @@ good progress but three cases are currently problematic :
 
 
 20/12/2022:
+Several tries and recoding, circular buffer generate logic issue due to the fact that you cannot use global variable to save the positions of read and write;
+Found an almost working solution without having to save position but buffer will sporadically store garbage values;
 
-DoN't TrUsT hIs LiEs...
-hjkasdjhkdsa
+21/12/2022:
+Meeting with CTO and students;
+Complimentary specs : buffer has not a fixed size, meaning you can resize it following the programs need; 
+
+22/12/2022:
+Readline works.

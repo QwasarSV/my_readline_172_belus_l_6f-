@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
-//#include <sys/stat.h>
-//#include "/usr/include/x86_64-linux-gnu/sys/stat.h"
-#include <fcntl.h>
 #include <stdlib.h>
-#include <string.h>
-
+#include <fcntl.h>
 
 int READLINE_READ_SIZE = 512;
 char* buff;
@@ -21,7 +17,6 @@ void* my_memset(void* ptr, char ch, int len)
     }
     return ptr_a;
 }
-
 
 char* init_my_readline()
 {
@@ -105,7 +100,7 @@ char* my_readline(int fd)
     int jndex = 0;
     int byte_count = 0;
 
-    size = strlen(buff) + 1;
+    size = my_strlen(buff) + 1;
     cursor = seek_newline(size);
 
     if (cursor == 0)
@@ -114,7 +109,7 @@ char* my_readline(int fd)
         tmp_buff[byte_count] = '\0';
         size = my_realloc_rl(byte_count);
         my_strcat(buff, tmp_buff);
-        size = strlen(buff) + 1;
+        size = my_strlen(buff) + 1;
         cursor = seek_newline(size);
     }
     new = malloc(sizeof(char)*cursor +1);
@@ -125,9 +120,9 @@ char* my_readline(int fd)
         index += 1;
     }
 
-    new[index ] = '\0';
+    new[index] = '\0';
     index += 1;
-    len = strlen(buff);
+    len = my_strlen(buff);
 
     // reset variables to flush buffer;
     if (index == size)
@@ -156,8 +151,7 @@ char* my_readline(int fd)
 
     return new;
 }
-    // printf("    ==>my_readline.c - body -  TAIL :      |%i|\n", rl_s->tail);
-    // printf("    ==>my_readline.c - body -  head :      |%i|\n", rl_s->head);
+
     // printf("    ==>my_readline.c - body -  count:      |%i|\n", counter);
     // printf("    ==>my_readline.c - body -  str_t:      |%s|\n", buff);
     // printf("    ==>my_readline.c - body -  len  :      |%i|\n", len);
