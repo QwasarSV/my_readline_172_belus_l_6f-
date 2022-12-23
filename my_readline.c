@@ -125,9 +125,9 @@ char* my_readline(int fd)
     size = my_strlen(buff) + 1;
     cursor = seek_newline(size);
     // fill buff
-    while (is_newline(size) == 0 && status >= 1)
+    while (is_newline(size) == 0 
+        && (byte_count = read(fd, tmp_buff, READLINE_READ_SIZE -1)))
     {
-        byte_count = read(fd, tmp_buff, READLINE_READ_SIZE -1);
         status = byte_count;
         tmp_buff[byte_count] = '\0';
         size = my_realloc_rl(byte_count);
