@@ -172,6 +172,7 @@ char* my_readline(int fd)
     {
         if (size == 1)
         {
+            free(new);
             free(buff);
             buff = NULL;
             return buff;
