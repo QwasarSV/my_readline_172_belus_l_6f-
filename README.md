@@ -65,39 +65,7 @@ Program organisation :
 
 ```
 
-                     ┌────────────┐
-                     │            │
-                     │  READLINE  │
-                     │            │
-                     └──────┬─────┘
-                            │
-                            │
-                            ▼
-             ┌─────────────────────────────┐
-             │                             │
-             │ IS '\n' present in buffer ? │
-             │                             │
-      ┌──────┴─────────────────────────────┴────────┐
-      │                                             │
-      │                                             │
-      │                                             │
-      ▼                                             ▼
-┌──────────┐                                    ┌────────────────────────────┐
-│          │                                    │                            │
-│  READ()  ├─────CONCATENATE┼TO┼BUFFER──────────►  EXTRACT LINE FROM BUFFER  │
-│          │                                    │                            │
-└──────────┘                                    └────┬───────────────────────┘
-                                                     │
-                                                     │
-                                                     │ COPY FROM BUFFER TO RETURN LINE
-                                                     │ RESET STRING POSITION WITHIN BUFFER
-                                                     │ FLUSH BUFFER PARTIALLY OR COMPLETELY
-                                                     │
-                  ┌──────────────┐                   │
-                  │              │                   │
-                  │  RETURN LINE │◄──────────────────┘
-                  │              │
-                  └──────────────┘
+workflow here : it's been erased for the third time
 
 
 

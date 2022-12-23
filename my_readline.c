@@ -88,6 +88,24 @@ int seek_newline(int size)
     return len ;
 }
 
+int is_newline(int size)
+{
+    int len = 0;
+    while (buff[len] != '\n' && len < size -1)
+    {
+        len += 1;
+    }
+    if (len == size -1)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+
 char* my_readline(int fd)
 {
     char* new = NULL;
@@ -99,13 +117,18 @@ char* my_readline(int fd)
     int index = 0;
     int jndex = 0;
     int byte_count = 0;
-
+    int status = 1;
+    if (buff == NULL)
+    {
+        return buff;
+    }
     size = my_strlen(buff) + 1;
     cursor = seek_newline(size);
-
-    if (cursor == 0)
+    // fill buff
+    while (is_newline(size) == 0 && status >= 1)
     {
         byte_count = read(fd, tmp_buff, READLINE_READ_SIZE -1);
+        status = byte_count;
         tmp_buff[byte_count] = '\0';
         size = my_realloc_rl(byte_count);
         my_strcat(buff, tmp_buff);
@@ -113,7 +136,7 @@ char* my_readline(int fd)
         cursor = seek_newline(size);
     }
     new = malloc(sizeof(char)*cursor +1);
-
+    //copy line
     while (index < cursor )
     {
         new[index] = buff[index];
@@ -130,7 +153,7 @@ char* my_readline(int fd)
         index = 1;
         len = 0;
     }
-
+    //flush buffer
     while (size - index)
     {
         tmp = buff[index];
@@ -145,10 +168,15 @@ char* my_readline(int fd)
 
     if (cursor == 0 && byte_count == 0 && buff[0] == '\0')
     {
-        free(new);
-        return NULL;
+        if (size == 1)
+        {
+            free(buff);
+            buff = NULL;
+            return new;
+        }
+        // free(new);
+        // return NULL;
     }
-
     return new;
 }
 
