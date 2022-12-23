@@ -111,6 +111,7 @@ char* my_readline(int fd)
 {
     if (fd == -1)
     {
+        free(buff);
         buff = NULL;
         return buff;
     }
