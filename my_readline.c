@@ -26,10 +26,10 @@ char* init_my_readline()
     return buff;
 }
 
-void free_readline()
-{
-    free(buff);
-}
+// void free_readline()
+// {
+//     free(buff);
+// }
 
 int my_strlen(char *str)
 {
@@ -199,6 +199,6 @@ char* my_readline(int fd)
 //         free(str);
 //     }
 
-//     free_readline();
+//     //free_readline();
 //     return 0;
 // }
