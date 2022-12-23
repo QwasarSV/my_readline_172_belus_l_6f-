@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <stdbool.h>
 
 int READLINE_READ_SIZE = 512;
 char* buff;
@@ -88,26 +89,32 @@ int seek_newline(int size)
     return len ;
 }
 
-int is_newline(int size)
+bool is_newline(int size)
 {
     int len = 0;
-    while (buff[len] != '\n' && len < size -1)
+    while (buff[len] != '\n' && len < size - 1)
     {
         len += 1;
     }
     if (len == size -1)
     {
-        return 0;
+        return false;
     }
     else
     {
-        return 1;
+        return true;
     }
 }
 
 
 char* my_readline(int fd)
 {
+    if (fd == -1)
+    {
+        buff = NULL;
+        return buff;
+    }
+
     char* new = NULL;
     char tmp_buff[READLINE_READ_SIZE];
     char tmp;
@@ -117,20 +124,15 @@ char* my_readline(int fd)
     int index = 0;
     int jndex = 0;
     int byte_count = 0;
-    int status = 1;
-    if (buff == NULL)
-    {
-        return buff;
-    }
+
     size = my_strlen(buff) + 1;
     cursor = seek_newline(size);
     // fill buff
-    while (is_newline(size) == 0 
+    while (is_newline(size) == false 
         && (byte_count = read(fd, tmp_buff, READLINE_READ_SIZE -1)))
     {
-        status = byte_count;
         tmp_buff[byte_count] = '\0';
-        size = my_realloc_rl(byte_count);
+        my_realloc_rl(byte_count);
         my_strcat(buff, tmp_buff);
         size = my_strlen(buff) + 1;
         cursor = seek_newline(size);
@@ -145,15 +147,15 @@ char* my_readline(int fd)
 
     new[index] = '\0';
     index += 1;
-    len = my_strlen(buff);
+    len = size - 1;
 
-    // reset variables to flush buffer;
+    // reset variables to complete buffer flush;
     if (index == size)
     {
         index = 1;
         len = 0;
     }
-    //flush buffer
+    // partial or complete buffer flush; 
     while (size - index)
     {
         tmp = buff[index];
@@ -165,17 +167,15 @@ char* my_readline(int fd)
         index += 1;
         jndex += 1;
     }
-
+    //enter exit state once buffer has been flushed 
     if (cursor == 0 && byte_count == 0 && buff[0] == '\0')
     {
         if (size == 1)
         {
             free(buff);
             buff = NULL;
-            return new;
+            return buff;
         }
-        // free(new);
-        // return NULL;
     }
     return new;
 }
@@ -184,20 +184,20 @@ char* my_readline(int fd)
     // printf("    ==>my_readline.c - body -  str_t:      |%s|\n", buff);
     // printf("    ==>my_readline.c - body -  len  :      |%i|\n", len);
 
-int main(int argc, char **argv) 
-{
-    (void)argc;
-    char* str = NULL;
-    init_my_readline();
+// int main(int argc, char **argv) 
+// {
+//     (void)argc;
+//     char* str = NULL;
+//     init_my_readline();
 
-    int fd = open(argv[1], O_RDONLY, 0644);
+//     int fd = open(argv[1], O_RDONLY, 0644);
 
-    while ((str = my_readline(fd)) != NULL)
-    {
-        printf("%s \n", str);
-        free(str);
-    }
+//     while ((str = my_readline(fd)) != NULL)
+//     {
+//         printf("%s \n", str);
+//         free(str);
+//     }
 
-    free_readline();
-    return 0;
-}
+//     free_readline();
+//     return 0;
+// }
